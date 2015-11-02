@@ -1,0 +1,43 @@
+[FLOATS]
+All examples taken from http://ruby-doc.org/core-2.2.0/Float.html
+This file serves as an unofficial cheatsheet for float methods
+
+# Returns the smallest integer that is greater than or equal to the number
+1.2.ceil      #=> 2
+2.0.ceil      #=> 2
+(-1.2).ceil   #=> -1
+(-2.0).ceil   #=> -2
+
+# Returns the largest integer that is less than or equal to the number
+1.2.floor      #=> 1
+2.0.floor      #=> 2
+(-1.2).floor   #=> -2
+(-2.0).floor   #=> -2
+
+# Rounds the float
+1.4.round      #=> 1
+1.5.round      #=> 2
+1.6.round      #=> 2
+(-1.5).round   #=> -2
+
+1.234567.round(2)  #=> 1.23
+1.234567.round(3)  #=> 1.235
+1.234567.round(4)  #=> 1.2346
+1.234567.round(5)  #=> 1.23457
+
+34567.89.round(-5) #=> 0
+34567.89.round(-4) #=> 30000
+34567.89.round(-3) #=> 35000
+34567.89.round(-2) #=> 34600
+34567.89.round(-1) #=> 34570
+34567.89.round(0)  #=> 34568
+34567.89.round(1)  #=> 34567.9
+34567.89.round(2)  #=> 34567.89
+34567.89.round(3)  #=> 34567.89
+
+# Returns the value of the float truncated as an integer
+num.to_i
+
+# Returns the value of the float as a string
+num.to_s
+

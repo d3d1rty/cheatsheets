@@ -1,0 +1,218 @@
+[REGULAR EXPRESSIONS]
+All examples taken from http://ruby-doc.org/core-2.2.0/Regexp.html
+This file serves as an unofficial cheatsheet for creating regular expressions with Ruby
+
+# Assigns pattern to regexp
+/hay/ =~ 'haystack'   #=> 0
+
+# Returns value matched by pattern or nil if no match
+/y/.match('haystack') #=> #<MatchData "y">
+/needle/.match('haystack') #=> nil
+/hay/.match('haystack')    #=> #<MatchData "hay">
+
+# Checks for match and returns the index of the first match or nil if no match
+/hay/ =~ 'haystack'   #=> 0
+'haystack' =~ /hay/   #=> 0
+/a/   =~ 'haystack'   #=> 1
+/u/   =~ 'haystack'   #=> nil
+
+# Metacharacters
+--(, ), [, ], {, }, ., ?, +, *.
+
+--Must use \ to escape 
+/1 \+ 2 = 3\?/.match('Does 1 + 2 = 3?') #=> #<MatchData "1 + 2 = 3?">
+
+# Can embed ruby expressions in patterns
+place = "東京都"
+/#{place}/.match("Go to 東京都") #=> #<MatchData "東京都">
+
+# Character classes
+--Delimited with square brackets and lists characters that may appear at that point
+/W[aeiou]rd/.match("Word") #=> #<MatchData "Word">
+
+--Use of - denotes inclusive range of characters
+/[0-9a-f]/.match('9f') #=> #<MatchData "9">
+/[9f]/.match('9f')     #=> #<MatchData "9">
+
+--Use of ^ at beginning of character class inverts the pattern; matches any character except those named
+/[^a-eg-z]/.match('f') #=> #<MatchData "f">
+
+--Can use &&, (), ||
+/[a-w&&[^c-g]z]/ # ([a-w] AND ([^c-g] OR z))
+				IS EQUAL TO
+/[abh-w]/
+
+# Metacharacters that act like character classes
+
+    /./ - Any character except a newline.
+
+    /./m - Any character (the m modifier enables multiline mode)
+
+    /\w/ - A word character ([a-zA-Z0-9_])
+
+    /\W/ - A non-word character ([^a-zA-Z0-9_]). Please take a look at Bug #4044 if using /\W/ with the /i modifier.
+
+    /\d/ - A digit character ([0-9])
+
+    /\D/ - A non-digit character ([^0-9])
+
+    /\h/ - A hexdigit character ([0-9a-fA-F])
+
+    /\H/ - A non-hexdigit character ([^0-9a-fA-F])
+
+    /\s/ - A whitespace character: /[ \t\r\n\f]/
+
+    /\S/ - A non-whitespace character: /[^ \t\r\n\f]/
+
+# POSIX bracket expressions that act like character classes
+
+    /[[:alnum:]]/ - Alphabetic and numeric character
+
+    /[[:alpha:]]/ - Alphabetic character
+
+    /[[:blank:]]/ - Space or tab
+
+    /[[:cntrl:]]/ - Control character
+
+    /[[:digit:]]/ - Digit
+
+    /[[:graph:]]/ - Non-blank character (excludes spaces, control characters, and similar)
+
+    /[[:lower:]]/ - Lowercase alphabetical character
+
+    /[[:print:]]/ - Like [:graph:], but includes the space character
+
+    /[[:punct:]]/ - Punctuation character
+
+    /[[:space:]]/ - Whitespace character ([:blank:], newline, carriage return, etc.)
+
+    /[[:upper:]]/ - Uppercase alphabetical
+
+    /[[:xdigit:]]/ - Digit allowed in a hexadecimal number (i.e., 0-9a-fA-F)
+
+# Quantifiers
+
+    * - Zero or more times
+
+    + - One or more times
+
+    ? - Zero or one times (optional)
+
+    {n} - Exactly n times
+
+    {n,} - n or more times
+
+    {,m} - m or less times
+
+    {n,m} - At least n and at most m times
+
+--At least one uppercase character (‘H’), at least one lowercase character (‘e’), two ‘l’ characters, then one ‘o’:
+"Hello".match(/[[:upper:]]+[[:lower:]]+l{2}o/) #=> #<MatchData "Hello">
+
+--Greedy
+/<.+>/.match("<a><b>")  #=> #<MatchData "<a><b>">
+
+--Lazy
+/<.+?>/.match("<a><b>") #=> #<MatchData "<a>">
+
+# Capturing
+/[csh](..) [csh]\1 in/.match("The cat sat in the hat")
+    #=> #<MatchData "cat sat in" 1:"at">
+
+# Returns a MatchData object with captured text in [] method
+/[csh](..) [csh]\1 in/.match("The cat sat in the hat")[1] #=> 'at'
+
+# Defines capture groups as names that can be referred to
+/\$(?<dollars>\d+)\.(?<cents>\d+)/.match("$3.67")
+    => #<MatchData "$3.67" dollars:"3" cents:"67">
+/\$(?<dollars>\d+)\.(?<cents>\d+)/.match("$3.67")[:dollars] #=> "3"
+
+# Backreferences a named group
+/(?<vowel>[aeiou]).\k<vowel>.\k<vowel>/.match('ototomy')
+    #=> #<MatchData "ototo" vowel:"o">
+
+# Matches a vowel followed by two word characters
+/[aeiou]\w{2}/.match("Caenorhabditis elegans") #=> #<MatchData "aen">
+
+# Matches a vowel followed by a word character, twice
+/([aeiou]\w){2}/.match("Caenorhabditis elegans")
+    #=> #<MatchData "enor" 1:"or">
+
+# Atomic Grouping
+/".*"/.match('"Quote"')     #=> #<MatchData "\"Quote\"">
+/"(?>.*)"/.match('"Quote"') #=> nil
+
+# Alternation
+/\w(and|or)\w/.match("Feliformia") #=> #<MatchData "form" 1:"or">
+/\w(and|or)\w/.match("furandi")    #=> #<MatchData "randi" 1:"and">
+/\w(and|or)\w/.match("dissemblance") #=> nil
+
+# Anchors
+
+    ^ - Matches beginning of line
+
+    $ - Matches end of line
+
+    \A - Matches beginning of string.
+
+    \Z - Matches end of string. If string ends with a newline, it matches just before newline
+
+    \z - Matches end of string
+
+    \G - Matches point where last match finished
+
+    \b - Matches word boundaries when outside brackets; backspace (0x08) when inside brackets
+
+    \B - Matches non-word boundaries
+
+    (?=pat) - Positive lookahead assertion: ensures that the following characters match pat, but doesn't include those characters in the matched text
+
+    (?!pat) - Negative lookahead assertion: ensures that the following characters do not match pat, but doesn't include those characters in the matched text
+
+    (?<=pat) - Positive lookbehind assertion: ensures that the preceding characters match pat, but doesn't include those characters in the matched text
+
+    (?<!pat) - Negative lookbehind assertion: ensures that the preceding characters do not match pat, but doesn't include those characters in the matched text
+
+# Matches anywhere in string
+/real/.match("surrealist") #=> #<MatchData "real">
+
+# Matches at the beginning of a string
+/\Areal/.match("surrealist") #=> nil
+
+# Matches at a word boundary
+/\band/.match("Demand") #Fails
+
+# Matches at a nonword boundary
+/\Band.+/.match("Supply and demand curve") #=> #<MatchData "and curve">
+
+# Uses positive lookahead and lookbehind to match text in tags
+/(?<=<b>)\w+(?=<\/b>)/.match("Fortune favours the <b>bold</b>")
+    #=> #<MatchData "bold">
+
+# Options
+
+    /pat/i - Ignore case
+
+    /pat/m - Treat a newline as a character matched by .
+
+    /pat/x - Ignore whitespace and comments in the pattern
+
+    /pat/o - Perform #{} interpolation only once
+
+# Uses ?on-off construct 
+/a(?i:b)c/.match('aBc') #=> #<MatchData "aBc">
+/a(?i:b)c/.match('abc') #=> #<MatchData "abc">
+
+# Special Global Variables
+
+    $~ is equivalent to ::last_match;
+
+    $& contains the complete matched text;
+
+    $` contains string before match;
+
+    $' contains string after match;
+
+    $1, $2 and so on contain text matching first, second, etc capture group;
+
+    $+ contains last capture group.

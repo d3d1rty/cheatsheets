@@ -1,0 +1,100 @@
+[FILES]
+All examples taken from http://ruby-doc.org/core-2.2.0/File.html
+This file serves as an unofficial cheatsheet for file methods
+
+# Creates a new file
+File.new(filename, mode)
+
+# Opens a file
+File.open(filename, mode)
+
+# Closes a file
+File.close
+
+# Renames a file
+File.rename("afile", "afile.bak")   #=> 0
+
+# Reads from a file
+myfile = File.open("temp.txt")
+myfile.readline
+myfile.each {|line| print line }
+
+# Writes to a file
+myfile.puts("This test line 1")
+
+# Converts a pathname to an absolute path name
+File.absolute_path("~oracle/bin")       #=> "<relative_path>/~oracle/bin"
+
+# Returns the last access time for a file as a Time object
+File.atime("testfile")   #=> Wed Apr 09 08:51:48 CDT 2003
+
+# Returns the birth time for a file as a Time object
+File.birthtime("testfile")   #=> Wed Apr 09 08:53:13 CDT 2003
+
+# Changes the files permissions and returns the number of files processed
+File.chmod(permissions octet, file name, file name)   #=> 2
+
+# Sample permissions
+0/User/Group/Other
+-------------------
+0/R+W+X/0/0 = 0700
+0/R+W/0/0 = 0600
+0/R+X/0/0 = 0500
+0/R/0/0 = 0400
+0/W+X/0/0 = 0300
+0/W/0/0 = 0200
+0/X/0/0 = 0100
+
+# Changes the ownership of the file
+File.chown(owner, group, file name)
+
+# Returns the change time of a file as a Time object
+File.ctime("testfile")   #=> Wed Apr 09 08:53:13 CDT 2003
+
+# Returns boolean status of whether a file can be executed or not
+File.executable?(file name)
+
+# Returns boolean status of whether a file exists or not
+File.exist?(file name)
+
+# Returns the extension of a file
+File.extname("test.rb")         #=> ".rb"
+File.extname("a/b/d/test.rb")   #=> ".rb"
+File.extname("foo.")            #=> ""
+File.extname("test")            #=> ""
+File.extname(".profile")        #=> ""
+File.extname(".profile.sh")     #=> ".sh"
+
+# Returns boolean value as to whether a file exists and is regular
+File.file?(file name)
+
+# Returns boolean value as to whether a named file is a directory or not
+File.directory?(file name)
+
+# Returns true if the named files are identical
+open("a", "w") {}
+p File.identical?("a", "a")      #=> true
+p File.identical?("a", "./a")    #=> true
+File.link("a", "b")
+p File.identical?("a", "b")      #=> true
+File.symlink("a", "c")
+p File.identical?("a", "c")      #=> true
+open("d", "w") {}
+p File.identical?("a", "d")      #=> false
+
+# Returns the size of a file
+File.size(filename)
+
+# Truncates a file to a given size in integer bytes
+f = File.new("out", "w")
+f.write("1234567890")     #=> 10
+f.close                   #=> nil
+File.truncate("out", 5)   #=> 0
+File.size("out")          #=> 5
+
+# Returns a boolean status as to whether file can be written to or not
+File.writable?(file_name)
+
+# Returns a boolean status as to whether a file exists and has zero size
+File.zero?(file_name)
+

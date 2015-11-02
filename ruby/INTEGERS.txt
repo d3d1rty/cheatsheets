@@ -1,0 +1,43 @@
+[INTEGERS]
+All examples taken from http://ruby-doc.org/core-2.2.0/Integer.html
+This file serves as an unofficial cheatsheet for integer methods
+
+# Returns true if a number is even
+num.even?
+
+# Returns true if a number is odd
+num.odd?
+
+# Returns the greatest common divisor of two numbers
+2.gcd(2)                    #=> 2
+3.gcd(-7)                   #=> 1
+((1<<31)-1).gcd((1<<61)-1)  #=> 1
+
+# Returns the least common multiple 
+2.lcm(2)                    #=> 2
+3.lcm(-7)                   #=> 21
+((1<<31)-1).lcm((1<<61)-1)  #=> 4951760154835678088235319297
+
+# Returns the next integer
+1.next      #=> 2
+(-1).next   #=> 0
+
+# Rounds an integer
+1.round        #=> 1
+1.round(2)     #=> 1.0
+15.round(-1)   #=> 20
+
+# Iterates a block int times 
+5.times do |i|
+  print i, " "
+end
+#=> 0 1 2 3 4
+
+# Iterates a block from the specified number up to and including the max number
+5.upto(10) { |i| print i, " " }
+#=> 5 6 7 8 9 10
+
+# Iterates a block descending from one number to the number specified
+5.downto(1) { |n| print n, ".. " }
+print "  Liftoff!\n"
+#=> "5.. 4.. 3.. 2.. 1..   Liftoff!"
