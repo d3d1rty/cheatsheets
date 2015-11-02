@@ -1,0 +1,21 @@
+normalizing databases- evaluating and correcting table structures to minimize data redundancies
+
+normal forms: 1nf, 2nf, 3nf
+
+pg 193 table 6-1
+
+1nf- primary key defined, primary key not null, no multi-value cells
+
+partial dependency when field name depends on one part of primary key
+transitive dependency nonkey field depends on another non key field
+
+2nf- 1nf with no partial dependencies
+
+to convert from 1nf to 2nf:
+determine primary keys
+indentify dependencies
+make new tables
+
+3nf- 2nf with no transitive dependencies
+
+atomicity- reducing an attribute to multiple fields of reduced complexity

@@ -1,0 +1,84 @@
+/* (Metadata) Data Definition Language(DDL) : CREATE TABLE, ALTER TABLE
+   (Data) Data Manipulation Language(DML) : INSERT, SELECT, UPDATE, DELETE
+*/
+
+--displays all rows from a table
+SELECT * FROM [ORDER DETAILS]
+
+--counts row in order details
+SELECT COUNT(*)
+FROM [ORDER DETAILS]
+
+--counts rows in table without including duplicate values
+SELECT COUNT(DISTINCT PRODUCTID)
+FROM [ORDER DETAILS]
+
+--shows latest dates of each order for customer id and company name
+SELECT CUSTOMERID,MAX(ORDERDATE)
+FROM CUSTOMERS C, ORDERS O
+WHERE C.CUSTOMERID = 0.CUSTOMERID
+GROUP BY C.CUSTOMERID,COMPANYNAME
+
+--shows latest dates of each order for customer id and company name sorted in descending order by date
+SELECT CUSTOMERID,MAX(ORDERDATE) AS LASTDATE
+FROM CUSTOMERS C, ORDERS O
+WHERE C.CUSTOMERID = 0.CUSTOMERID
+GROUP BY C.CUSTOMERID,COMPANYNAME
+ORDER BY LASTDATE DESC
+
+--creates table several fields of different data types
+CREATE TABLE EMPLOYEE
+(
+	EMPNO VARCHAR(15) PRIMARY KEY,
+	EMPFNAME VARCHAR(40),
+	EMPLNAME VARCHAR(50),
+	EMPDOB DATE,
+	EMPRATEOFPAY MONEY
+)
+
+--creates table with a concatenated key
+CREATE TABLE DETAILS
+(
+	ITEMNO VARCHAR(20),
+	ORDERNO VARCHAR(30),
+	QTY INT
+	PRIMARY KEY(ITEMNO,ORDERNO)
+)
+
+--adds values to table
+INSERT INTO EMPLOYEE
+VALUES ('101','MARTIN','WILLIAMS','12/15/1985',22.00)
+
+--inserts values when certain fields are unknown
+INSERT INTO EMPLOYEE(EMPNO,EMPFNAME,EMPLNAME,EMPRATEOFPAY)
+VALUES ('102','June','Miller',29.00)
+
+--updates a row in a table to a different value
+UPDATE EMPLOYEE
+SET EMPLNAME = 'Jones' --field to change and value to change to
+WHERE EMPNO = '102' --pk
+
+--updates two fields at once
+UPDATE EMPLOYEE
+SET EMPFNAME = 'Martha',EMPLNAME = 'Thomas'
+WHERE EMPNO = '102'
+
+--removes a row from a table corresponding to condition
+DELETE FROM EMPLOYEE
+WHERE EMPNO = '101'
+
+--adds attribute to table
+ALTER TABLE EMPLOYEE
+ADD EMPHIREDATE DATE
+
+--changes data type constraint for specific attribute
+ALTER TABLE EMPLOYEE
+ALTER COLUMN EMPLNAME VARCHAR(60)
+
+--removes attribute from table
+ALTER TABLE EMPLOYEE
+DROP COLUMN EMPLNAME
+
+--destroys table
+DROP TABLE EMPLOYEE
+

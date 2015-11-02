@@ -1,0 +1,21 @@
+trigger- block of code that is executed automatically when an insert, update, or delete occurs.
+usually attached to a single table
+never has parameters
+
+
+CREATE TRIGGER TR1 
+ON PRODUCT14 --which table
+FOR INSERT,UPDATE --which operations fire the trigger
+AS
+	DECLARE @X1 MONEY --declare variable
+	DECLARE @X2 MONEY
+	SELECT @X1 = INSERTED.PROD_COST FROM INSERTED --assigns value to variable
+	SELECT @X2 = INSERTED.PROD_SELLING_PRICE FROM INSERTED
+	IF @X2 < 2 * @X1 --starts IF with specific condition
+	BEGIN
+		PRINT 'PRICE MUST BE AT LEAST TWO TIMES THE COST.'
+		ROLLBACK --stops the operation if condition is met
+	END
+
+--INSERTED is special preview table that exists only when the trigger is running
+--DELETED is a special table to see row before it deleted

@@ -1,0 +1,69 @@
+/* 
+stored procedures (pg 385)
+
+program written in language of the database
+MS SQL Server = Transact-SQL(T-SQL)
+expand 'Progammability > Stored Procedures'
+*/
+
+--creates stored procedure
+CREATE PROCEDURE P1_SU2015
+AS 
+	--displays message
+	PRINT 'FIRST EXAMPLE-2015'
+	
+--runs stored procedure
+EXEC P1_SU2015
+
+--modifies a stored procedure
+ALTER PROCEDURE P1_SU2015
+AS
+	PRINT 'IT HAS BEEN CHANGED'
+	
+--creates a stored procedure which returns employee information
+CREATE PROCEDURE P2_SU2015
+AS
+	SELECT EMPLOYEEID,FIRSTNAME,LASTNAME,
+	FROM EMPLOYEES
+	ORDER BY LASTNAME
+	
+--creates a stored procedure which utilizes a parameter
+CREATE PROCEDURE P3_SU2015 @P1 INT
+AS 
+	SELECT PRODUCTID,PRODUCTNAME,UNITSINSTOCK
+	FROM PRODUCTS
+	WHERE SUPPLIERID = @P1
+	
+--runs a stored procedure with a parameter
+P3_SU2015 9 --parameter supplied must be of correct data type
+
+--creates a stored procedure with multiple parameters
+CREATE PROCEDURE P4_SU2015 @MYCITY NVARCHAR(15),@MYCOUNTRY NVARCHAR(15)
+AS
+	SELECT CUSTOMERID,COMPANYNAME
+	FROM CUSTOMERS
+	WHERE CITY = @MYCITY
+	AND COUNTRY = @MYCOUNTRY
+	
+--runs a stored procedure with multiple string parameters
+P4_SU2015 'London','UK'
+
+-- creates a stored procedure with if/else statements
+CREATE PROCEDURE P5_SU2015 @P1 INT
+AS
+	IF NOT EXISTS(SELECT * FROM PRODUCTS WHERE SUPPLIERID = @P1)
+		PRINT 'NO PRODUCTS EXIST FOR THAT SUPPLIER'
+	ELSE 
+		SELECT PRODUCTID,PRODUCTNAME,UNITSINSTOCK
+		FROM PRODUCTS
+		WHERE SUPPLIERID = @P1
+		
+-- creates a stored procedure with if/else statements
+CREATE PROCEDURE P5_SU2015 @P1 INT
+AS
+	IF NOT EXISTS(SELECT * FROM PRODUCTS WHERE SUPPLIERID = @P1)
+		PRINT 'NO PRODUCTS EXIST FOR THAT SUPPLIER ' + CONVERT(VARCHAR,@P1)
+	ELSE 
+		SELECT PRODUCTID,PRODUCTNAME,UNITSINSTOCK
+		FROM PRODUCTS
+		WHERE SUPPLIERID = @P1
