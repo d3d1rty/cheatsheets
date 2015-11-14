@@ -1,5 +1,0 @@
-NOT NULL --won't accept null values
-UNIQUE --ensures values are not duplicates
-DEFAULT --value to set if not otherwise set
-CHECK --validates data
-
